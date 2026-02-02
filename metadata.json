@@ -1,0 +1,7 @@
+{
+  "name": "Mtunzini Country Club",
+  "description": "A refined, modern web experience for Mtunzini Country Club, featuring an AI-powered club concierge and comprehensive information about facilities, membership, and events.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

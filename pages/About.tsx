@@ -9,10 +9,10 @@ const AboutPage: React.FC = () => (
       <div className="inline-block px-4 py-1 border border-mccGold/30 rounded-full mb-6">
         <span className="text-mccGold uppercase tracking-[0.3em] text-[10px] font-bold">Since 1954</span>
       </div>
-      <h2 className="text-5xl md:text-7xl text-mccGreen mb-10 leading-tight">The Beating Heart<br/><span className="font-serif italic text-mccGold font-normal">of Mtunzini</span></h2>
+      <h2 className="text-5xl md:text-7xl text-mccGreen mb-10 leading-tight">The Beating Heart<br /><span className="font-serif italic text-mccGold font-normal">of Mtunzini</span></h2>
       <div className="grid md:grid-cols-2 gap-12 text-left items-center">
         <div className="space-y-6">
-           <p className="text-xl text-gray-700 leading-relaxed font-light">
+          <p className="text-xl text-gray-700 leading-relaxed font-light">
             Mtunzini Country Club isn't about stiff collars and strict rules. It's about community, coastal living, and the shared love of the Zululand landscape.
           </p>
           <p className="text-lg text-gray-500 leading-relaxed">
@@ -24,21 +24,21 @@ const AboutPage: React.FC = () => (
         </div>
       </div>
     </div>
-    
+
     <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-10 mt-24">
       {[
-        { 
-          title: "Community First", 
+        {
+          title: "Community First",
           desc: "We are the hub for Mtunzini locals. From fundraisers and weddings to the legendary Saturday rugby screenings.",
           icon: Icons.Users
         },
-        { 
-          title: "Sports Excellence", 
+        {
+          title: "Sports Excellence",
           desc: "Championship quality greens and well-maintained courts. We take our sport seriously, even if we play with a smile.",
           icon: Icons.Flag
         },
-        { 
-          title: "The Ultimate View", 
+        {
+          title: "The Ultimate View",
           desc: "Our deck offers a stunning panoramic view of the Umlalazi lagoon and dunes. The sunset capital of the coast.",
           icon: Icons.Utensils
         }
@@ -64,7 +64,7 @@ const AboutPage: React.FC = () => (
           <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-6 grayscale group-hover:grayscale-0 transition-all border-4 border-mccGold/20">
             <img src="https://picsum.photos/300/300?1" alt="Manager" className="w-full h-full object-cover" />
           </div>
-          <h4 className="text-xl font-bold">Andre Van Wyk</h4>
+          <h4 className="text-xl font-bold">Jodi Niemand</h4>
           <p className="text-mccGold text-xs uppercase tracking-widest mt-2">Club Manager</p>
         </div>
         <div className="text-center group">

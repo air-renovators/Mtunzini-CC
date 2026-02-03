@@ -1,5 +1,6 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import Papa from 'papaparse';
 import Icon from '../components/Icon';
 import { Icons } from '../constants';
 import { EventItem } from '../types';
@@ -8,72 +9,120 @@ const EventsPage: React.FC = () => {
   const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
   const [selectedMonth, setSelectedMonth] = useState("JAN");
 
-  const allEvents: EventItem[] = useMemo(() => [
-    // JAN
-    { date: '03', month: 'JAN', day: 'Sat', title: 'Monthly Mug', description: 'The first prestigious cup of the new year.', category: 'GOLF', color: 'mccGold' },
-    { date: '07', month: 'JAN', day: 'Wed', title: 'East Toyota Sponsor Day', description: 'Mid-week tournament sponsored by East Toyota.', category: 'SPONSOR', color: 'mccGreen' },
-    { date: '31', month: 'JAN', day: 'Sat', title: 'Ryder Cup', description: 'The ultimate team challenge at MCC.', category: 'MAJOR', color: 'mccDark' },
-    // FEB
-    { date: '04', month: 'FEB', day: 'Wed', title: 'East Toyota Sponsor Day', description: 'Mid-week tournament sponsored by East Toyota.', category: 'SPONSOR', color: 'mccGreen' },
-    { date: '07', month: 'FEB', day: 'Sat', title: 'Monthly Mug', description: 'Standard club competition.', category: 'GOLF', color: 'mccGreen' },
-    { date: '14', month: 'FEB', day: 'Sat', title: 'Valentines Day Dinner', description: 'Live music and a special menu for couples on the deck.', category: 'SOCIAL', color: 'mccGold' },
-    // MAR
-    { date: '04', month: 'MAR', day: 'Wed', title: 'East Toyota Sponsor Day', description: 'Sponsor tournament.', category: 'SPONSOR', color: 'mccGreen' },
-    { date: '07', month: 'MAR', day: 'Sat', title: 'Monthly Mug', description: 'Monthly ranking tournament.', category: 'GOLF', color: 'mccGreen' },
-    { date: '28', month: 'MAR', day: 'Sat', title: 'Sugar Tots Golf Day', description: 'A fun community golf day for a good cause.', category: 'COMMUNITY', color: 'mccSand' },
-    // APR
-    { date: '01', month: 'APR', day: 'Wed', title: 'East Toyota Sponsor Day', description: 'Sponsor tournament.', category: 'SPONSOR', color: 'mccGreen' },
-    { date: '03-06', month: 'APR', day: 'Fri-Mon', title: 'Easter Weekend', description: 'Family activities and special lunches throughout the weekend.', category: 'SOCIAL', color: 'mccGold' },
-    // MAY
-    { date: '02', month: 'MAY', day: 'Sat', title: 'NG Kerk Golf Day', description: 'Community fundraiser golf event.', category: 'COMMUNITY', color: 'mccSand' },
-    { date: '13', month: 'MAY', day: 'Wed', title: 'East Toyota Sponsor Day', description: 'Sponsor tournament.', category: 'SPONSOR', color: 'mccGreen' },
-    { date: '16', month: 'MAY', day: 'Sat', title: 'MPS Golf Day', description: 'Mtunzini Primary School fundraiser.', category: 'COMMUNITY', color: 'mccSand' },
-    { date: '17', month: 'MAY', day: 'Sun', title: 'RITS Tournament', description: 'Special invitational tournament.', category: 'GOLF', color: 'mccGreen' },
-    // JUN
-    { date: '10', month: 'JUN', day: 'Wed', title: 'East Toyota Sponsor Day', description: 'Sponsor tournament.', category: 'SPONSOR', color: 'mccGreen' },
-    { date: '13', month: 'JUN', day: 'Sat', title: 'St Catherines Golf Day', description: 'Annual fundraiser day.', category: 'COMMUNITY', color: 'mccSand' },
-    { date: '20', month: 'JUN', day: 'Sat', title: 'Monthly Mug', description: 'Pre-Championships warmup.', category: 'GOLF', color: 'mccGreen' },
-    { date: '26', month: 'JUN', day: 'Fri', title: 'Night Golf', description: 'Glow-in-the-dark golf followed by late-night braai.', category: 'SOCIAL', color: 'mccDark' },
-    { date: '27-28', month: 'JUN', day: 'Sat-Sun', title: 'Club Championships', description: 'The pinnacle of the MCC golfing year. Two days of stroke play.', category: 'MAJOR', color: 'mccGold' },
-    // JUL
-    { date: '01', month: 'JUL', day: 'Wed', title: 'East Toyota Sponsor Day', description: 'Sponsor tournament.', category: 'SPONSOR', color: 'mccGreen' },
-    { date: '04', month: 'JUL', day: 'Sat', title: 'Monthly Mug', description: 'Post-championship cup.', category: 'GOLF', color: 'mccGreen' },
-    { date: '11', month: 'JUL', day: 'Sat', title: 'Carike 40th Invitational', description: 'Private function & golf.', category: 'PRIVATE', color: 'mccSand' },
-    { date: '12', month: 'JUL', day: 'Sun', title: 'SAGES', description: 'Senior golf association gathering.', category: 'GOLF', color: 'mccGreen' },
-    { date: '19', month: 'JUL', day: 'Sun', title: 'LIV Golf 8AM', description: 'Morning shotgun start.', category: 'GOLF', color: 'mccGreen' },
-    { date: '25', month: 'JUL', day: 'Sat', title: 'Toti Golf Tour Louis', description: 'Visiting tour from Amanzimtoti.', category: 'TOUR', color: 'mccDark' },
-    { date: '29', month: 'JUL', day: 'Wed', title: 'East Toyota Sponsor Day', description: 'Sponsor tournament.', category: 'SPONSOR', color: 'mccGreen' },
-    // AUG
-    { date: '01', month: 'AUG', day: 'Sat', title: 'Monthly Mug', description: 'August ranking tournament.', category: 'GOLF', color: 'mccGreen' },
-    { date: '05', month: 'AUG', day: 'Wed', title: 'East Toyota Sponsor Day', description: 'Sponsor tournament.', category: 'SPONSOR', color: 'mccGreen' },
-    { date: '08', month: 'AUG', day: 'Sat', title: 'MPPS Golf Challenge', description: 'Annual challenge event.', category: 'GOLF', color: 'mccGreen' },
-    { date: '22', month: 'AUG', day: 'Sat', title: 'LEAF Golf Day', description: 'Environmental awareness fundraiser.', category: 'COMMUNITY', color: 'mccSand' },
-    { date: '28', month: 'AUG', day: 'Fri', title: 'PMB College Old Boys', description: 'Invitational event for old boys.', category: 'SOCIAL', color: 'mccDark' },
-    { date: '29', month: 'AUG', day: 'Sat', title: 'Pentathlon', description: 'Multisport club challenge.', category: 'MAJOR', color: 'mccGold' },
-    // SEP
-    { date: '02', month: 'SEP', day: 'Wed', title: 'East Toyota Sponsor Day', description: 'Sponsor tournament.', category: 'SPONSOR', color: 'mccGreen' },
-    { date: '05', month: 'SEP', day: 'Sat', title: 'Tennis Golf Day', description: 'Joint event for golfers and tennis players.', category: 'GOLF', color: 'mccGreen' },
-    { date: '12', month: 'SEP', day: 'Sat', title: 'Lavender Lane Golf Day', description: 'Community fundraiser.', category: 'COMMUNITY', color: 'mccSand' },
-    { date: '17', month: 'SEP', day: 'Thu', title: 'Nicolien Golf Day', description: 'Invitational tournament.', category: 'PRIVATE', color: 'mccSand' },
-    { date: '19', month: 'SEP', day: 'Sat', title: 'Tapanga Cup', description: 'Regional invitational challenge.', category: 'MAJOR', color: 'mccDark' },
-    { date: '26', month: 'SEP', day: 'Sat', title: 'Monthly Mug', description: 'September ranking tournament.', category: 'GOLF', color: 'mccGreen' },
-    // OCT
-    { date: '03', month: 'OCT', day: 'Sat', title: 'MPPS Challenge', description: 'Invitational school fundraiser.', category: 'COMMUNITY', color: 'mccSand' },
-    { date: '07', month: 'OCT', day: 'Wed', title: 'East Toyota Sponsor Day', description: 'Sponsor tournament.', category: 'SPONSOR', color: 'mccGreen' },
-    { date: '10', month: 'OCT', day: 'Sat', title: 'Monthly Mug / CPF Day', description: 'Ranking cup & Community Policing fundraiser.', category: 'MAJOR', color: 'mccGold' },
-    { date: '17', month: 'OCT', day: 'Sat', title: 'Mondi Golf Day', description: 'Corporate tournament.', category: 'SPONSOR', color: 'mccGreen' },
-    { date: '24', month: 'OCT', day: 'Sat', title: 'BEERFEST', description: 'Zululand\'s biggest party. Live music, local brews, and festival food.', category: 'SOCIAL', color: 'mccGold' },
-    // NOV
-    { date: '31/01', month: 'NOV', day: 'Sat/Sun', title: 'Monthly Mug', description: 'End-of-season ranking.', category: 'GOLF', color: 'mccGreen' },
-    { date: '04', month: 'NOV', day: 'Wed', title: 'East Toyota Sponsor Day', description: 'Sponsor tournament.', category: 'SPONSOR', color: 'mccGreen' },
-    { date: '21', month: 'NOV', day: 'Sat', title: 'Ladies Golf Day', description: 'Celebrating the women of MCC.', category: 'GOLF', color: 'mccGold' },
-    { date: '28', month: 'NOV', day: 'Sat', title: 'Squash Golf Day', description: 'A fun cross-sport event.', category: 'SOCIAL', color: 'mccSand' },
-    // DEC
-    { date: '05', month: 'DEC', day: 'Sat', title: 'Greenkeepers Challenge', description: 'The wildest golf day of the year. Secret hazards everywhere!', category: 'MAJOR', color: 'mccDark' },
-    { date: '12', month: 'DEC', day: 'Sat', title: 'Boere vs Souties', description: 'The traditional local rivalry clash.', category: 'MAJOR', color: 'mccGold' },
-    { date: '15', month: 'DEC', day: 'Tue', title: 'Klip In Die Bos', description: 'Year-end social tournament.', category: 'SOCIAL', color: 'mccSand' },
-    { date: '19', month: 'DEC', day: 'Sat', title: 'Christmas Cheer', description: 'The final club event of the year. Gifts, golf, and family dinner.', category: 'MAJOR', color: 'mccGold' },
-  ], []);
+  const [allEvents, setAllEvents] = useState<EventItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('/events.csv', { cache: 'no-cache' });
+        if (!response.ok) throw new Error('Failed to fetch calendar');
+
+        const csvText = await response.text();
+
+        Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (results) => {
+            const parsedEvents = results.data.map((row: any) => ({
+              date: row['Date'] || '',
+              month: (row['Month'] || '').substring(0, 3).toUpperCase(),
+              day: row['Day'] || '',
+              title: row['Event Name'] || 'Untitled Event',
+              description: row['Description'] || '',
+              category: (row['Category'] || 'SOCIAL').toUpperCase(),
+              color: mapCategoryToColor(row['Category'])
+            })).filter((e: EventItem) => e.month && e.date); // Filter out empty rows
+
+            setAllEvents(parsedEvents);
+            setLoading(false);
+          },
+          error: (err: Error) => {
+            console.error("CSV Parse Error:", err);
+            setError("Failed to parse calendar data");
+            setLoading(false);
+          }
+        });
+      } catch (err) {
+        console.error("Fetch Error:", err);
+        setError("Could not load events");
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  // Parser for the Visual Calendar Grid (Cells with numbers followed by cells with text)
+  const parseVisualCalendar = (csvText: string): EventItem[] => {
+    const events: EventItem[] = [];
+    const rows = Papa.parse(csvText, { header: false, skipEmptyLines: false }).data as string[][];
+
+    let currentMonth = "JAN"; // Default
+
+    // Attempt to find month name in first few rows
+    for (let i = 0; i < 5; i++) {
+      if (rows[i]) {
+        const joined = rows[i].join(' ').toUpperCase();
+        const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        const found = months.find(m => joined.includes(m));
+        if (found) currentMonth = found;
+      }
+    }
+
+    // Iterate rows to find date/event pairs
+    for (let i = 0; i < rows.length - 1; i++) {
+      const row = rows[i];
+      const nextRow = rows[i + 1];
+
+      row.forEach((cell, colIndex) => {
+        const cellNum = parseInt(cell);
+        if (!isNaN(cellNum) && cellNum >= 1 && cellNum <= 31) {
+          // Potentially a date. Check next row for event.
+          if (nextRow && nextRow[colIndex] && nextRow[colIndex].trim() !== '') {
+            const eventTitle = nextRow[colIndex].trim();
+
+            // Simple Category Logic
+            let category = 'GOLF';
+            if (eventTitle.includes('SPONSOR')) category = 'SPONSOR';
+            if (eventTitle.includes('MUG')) category = 'GOLF';
+            if (eventTitle.includes('CHAMPIONSHIP')) category = 'MAJOR';
+            if (eventTitle.includes('WEDDING') || eventTitle.includes('DINNER')) category = 'SOCIAL';
+
+            events.push({
+              date: cellNum.toString().padStart(2, '0'),
+              month: currentMonth,
+              day: getDayName(currentMonth, cellNum),
+              title: eventTitle,
+              description: 'Event synced from Google Sheets',
+              category: category,
+              color: mapCategoryToColor(category)
+            });
+          }
+        }
+      });
+    }
+    return events;
+  };
+
+  const getDayName = (month: string, date: number) => {
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const monthIndex = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"].indexOf(month);
+    if (monthIndex === -1) return 'Sat';
+
+    // 2026 Calendar logic
+    const d = new Date(2026, monthIndex, date);
+    return days[d.getDay()];
+  };
+
+  const mapCategoryToColor = (category: string) => {
+    const cat = (category || '').toUpperCase();
+    if (['GOLF', 'COMPETITION', 'TOURNAMENT'].some(c => cat.includes(c))) return 'mccGreen';
+    if (['SOCIAL', 'DINNER', 'PARTY', 'FUN'].some(c => cat.includes(c))) return 'mccGold';
+    if (['MAJOR', 'CHAMPIONSHIP', 'CUP'].some(c => cat.includes(c))) return 'mccDark';
+    return 'mccSand';
+  };
 
   const filteredEvents = useMemo(() => {
     return allEvents.filter(e => e.month === selectedMonth);
@@ -96,11 +145,10 @@ const EventsPage: React.FC = () => {
             <button
               key={m}
               onClick={() => setSelectedMonth(m)}
-              className={`px-6 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all whitespace-nowrap ${
-                selectedMonth === m 
-                ? 'bg-mccGreen text-white shadow-lg scale-105' 
+              className={`px-6 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all whitespace-nowrap ${selectedMonth === m
+                ? 'bg-mccGreen text-white shadow-lg scale-105'
                 : 'text-gray-400 hover:text-mccGreen'
-              }`}
+                }`}
             >
               {m}
             </button>
@@ -109,14 +157,23 @@ const EventsPage: React.FC = () => {
 
         {/* Events Grid */}
         <div className="grid gap-8 max-w-5xl mx-auto min-h-[400px]">
-          {filteredEvents.length > 0 ? (
+          {loading ? (
+            <div className="flex flex-col items-center justify-center text-center py-20 opacity-60">
+              <div className="w-12 h-12 border-4 border-mccGold border-t-transparent rounded-full animate-spin mb-4"></div>
+              <p className="text-sm font-bold uppercase tracking-widest text-mccGreen">Loading Calendar...</p>
+            </div>
+          ) : error ? (
+            <div className="flex flex-col items-center justify-center text-center py-20 opacity-60 text-red-500">
+              <Icon path={Icons.X} className="w-16 h-16 mb-4" />
+              <p>{error}</p>
+            </div>
+          ) : filteredEvents.length > 0 ? (
             filteredEvents.map((event, i) => (
               <div key={i} className="group bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 flex flex-col md:row-span-1 md:flex-row hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 animate-in slide-in-from-bottom-2">
-                <div className={`p-8 md:w-48 flex flex-col justify-center items-center text-center ${
-                  event.color === 'mccGreen' ? 'bg-mccGreen text-white' : 
-                  event.color === 'mccGold' ? 'bg-mccGold text-white' : 
-                  event.color === 'mccDark' ? 'bg-mccDark text-white' : 'bg-mccSand text-mccGreen'
-                }`}>
+                <div className={`p-8 md:w-48 flex flex-col justify-center items-center text-center ${event.color === 'mccGreen' ? 'bg-mccGreen text-white' :
+                  event.color === 'mccGold' ? 'bg-mccGold text-white' :
+                    event.color === 'mccDark' ? 'bg-mccDark text-white' : 'bg-mccSand text-mccGreen'
+                  }`}>
                   <span className="text-[10px] uppercase tracking-[0.3em] opacity-80 mb-2">{event.month}</span>
                   <span className="text-4xl font-serif font-bold mb-1 leading-none">{event.date}</span>
                   <div className={`w-8 h-[1px] my-3 ${event.color === 'mccSand' ? 'bg-mccGreen/20' : 'bg-white/30'}`}></div>
@@ -124,9 +181,8 @@ const EventsPage: React.FC = () => {
                 </div>
                 <div className="p-10 flex-grow space-y-4">
                   <div className="flex justify-between items-start">
-                    <span className={`text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border ${
-                      event.color === 'mccSand' ? 'border-mccGreen text-mccGreen' : 'border-mccGold text-mccGold'
-                    }`}>
+                    <span className={`text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border ${event.color === 'mccSand' ? 'border-mccGreen text-mccGreen' : 'border-mccGold text-mccGold'
+                      }`}>
                       {event.category}
                     </span>
                     <button className="p-2 hover:bg-gray-50 rounded-full transition-colors"><Icon path={Icons.Calendar} className="w-4 h-4 text-gray-400" /></button>
@@ -165,7 +221,7 @@ const EventsPage: React.FC = () => {
               </div>
               <div className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full border border-white/10 text-[10px] uppercase font-bold tracking-widest">
                 <Icon path={Icons.Check} className="w-3 h-3 text-mccGold" />
-                 lagoon View
+                lagoon View
               </div>
             </div>
           </div>

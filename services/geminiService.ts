@@ -15,7 +15,7 @@ export async function chatWithConcierge(message: string, history: { role: 'user'
     ai = new GoogleGenAI({ apiKey });
   }
 
-  const model = "gemini-1.5-flash"; // Updated to stable model name if needed, or keep preview
+  const model = "gemini-2.0-flash";
 
   try {
     const response = await ai.models.generateContent({

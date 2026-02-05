@@ -13,6 +13,7 @@ import MembershipPage from './pages/Membership';
 import EventsPage from './pages/Events';
 import ContactPage from './pages/Contact';
 import LeaderboardsPage from './pages/Leaderboards';
+import CoursePage from './pages/Course';
 
 const App: React.FC = () => {
   const [activePage, setActivePage] = useState<PageId>('home');
@@ -72,8 +73,8 @@ const App: React.FC = () => {
               <button
                 onClick={() => togglePage('membership')}
                 className={`px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest border transition-all ${isScrolled || activePage !== 'home'
-                    ? 'border-mccGreen text-mccGreen hover:bg-mccGreen hover:text-white'
-                    : 'border-white text-white hover:bg-white hover:text-mccGreen'
+                  ? 'border-mccGreen text-mccGreen hover:bg-mccGreen hover:text-white'
+                  : 'border-white text-white hover:bg-white hover:text-mccGreen'
                   }`}
               >
                 Join Now
@@ -133,6 +134,7 @@ const App: React.FC = () => {
           {activePage === 'contact' && <ContactPage />}
           {activePage === 'facilities' && <FacilitiesPage />}
           {activePage === 'leaderboards' && <LeaderboardsPage />}
+          {activePage === 'course' && <CoursePage />}
         </div>
       </main>
 

@@ -1,5 +1,5 @@
 
-export type PageId = 'home' | 'about' | 'facilities' | 'membership' | 'events' | 'contact' | 'leaderboards';
+export type PageId = 'home' | 'about' | 'facilities' | 'membership' | 'events' | 'contact' | 'leaderboards' | 'course';
 
 export interface NavLink {
   name: string;
@@ -34,4 +34,14 @@ export interface TennisPlayoff {
   score: string;
   status: 'upcoming' | 'completed';
   date?: string; // e.g. "2026-10-15 14:00"
+}
+
+export interface Hole {
+  number: number;
+  par: number;
+  strokeIndex: number;
+  distanceMeter: number;
+  description: string;
+  videoUrl?: string; // URL for the hole flyover/guide
+  thumbnailUrl?: string; // Optional thumbnail for the video
 }
